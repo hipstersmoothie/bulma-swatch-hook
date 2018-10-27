@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulmaApp uses default 1`] = `"My Content"`;
+
+exports[`BulmaApp uses default 2`] = `"My Content"`;

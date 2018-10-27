@@ -1,0 +1,129 @@
+{
+  "name": "bulma-swatch-hook",
+  "version": "0.1.0",
+  "description": "Bulma swatches as a react component or a hook.",
+  "main": "dist/index.js",
+  "source": "index.js",
+  "author": {
+    "name": "Andrew Lisowski",
+    "email": "lisowski54@gmail.com"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "lint": "xo",
+    "build": "babel index.js -d dist/ --ignore '**/*.test.js'",
+    "build:watch": "npm run build -- --watch",
+    "prerelease": "npm run build",
+    "release": "github-semantic-version --bump --changelog --push --publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hipstersmoothie/bulma-pagination-react"
+  },
+  "peerDependencies": {
+    "react": ">=16.7.0-alpha.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react-cache": "^2.0.0-alpha.0",
+    "simple-cache-provider": "^0.10.0",
+    "the-platform": "^0.8.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-add-module-exports": "^1.0.0",
+    "eslint": "^5.7.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-config-xo-react": "^0.17.0",
+    "eslint-plugin-react": "^7.11.1",
+    "github-semantic-version": "^7.6.0",
+    "husky": "^1.1.2",
+    "jest": "^23.6.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "react": "^16.7.0-alpha.0",
+    "react-dom": "^16.7.0-alpha.0",
+    "react-test-renderer": "^16.5.2",
+    "xo": "^0.23.0"
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/dist/**",
+      "!**/stories/**",
+      "!**/coverage/**"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
+  "xo": {
+    "env": [
+      "dom",
+      "browser",
+      "jest"
+    ],
+    "extends": [
+      "prettier",
+      "xo-react/space"
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+      "react/jsx-tag-spacing": 0,
+      "import/no-unresolved": [
+        "error",
+        {
+          "ignore": [
+            "^react$"
+          ]
+        }
+      ]
+    }
+  },
+  "babel": {
+    "presets": [
+      "@babel/env",
+      "@babel/preset-react"
+    ]
+  },
+  "gsv": {
+    "majorLabel": "Version: Major",
+    "minorLabel": "Version: Minor",
+    "patchLabel": "Version: Patch",
+    "internalLabel": "No version: Internal"
+  }
+}

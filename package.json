@@ -1,6 +1,6 @@
 {
   "name": "bulma-swatch-hook",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Bulma swatches as a react component or a hook.",
   "main": "dist/index.js",
   "source": "index.js",

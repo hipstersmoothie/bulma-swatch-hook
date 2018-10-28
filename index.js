@@ -4,23 +4,44 @@ import PropTypes from 'prop-types';
 const resolved = new Map();
 
 const useStylesheet = ({ href, media = 'all' }) => {
+  const sheets = document.getElementsByClassName('bulma-swatch');
+  const currentSheet = sheets[sheets.length - 1];
+
+  // Target styleSheet is the last on so it has loaded.
+  if (currentSheet && currentSheet.href === href) {
+    return;
+  }
+
+  // Style has already loaded so we can just add it to the end
   if (resolved.has(href)) {
-    return document.body.appendChild(resolved.get(href));
+    const link = resolved.get(href);
+    return document.body.appendChild(link);
   }
 
   throw new Promise((resolve, reject) => {
     const link = document.createElement('link');
-
     link.rel = 'stylesheet';
     link.href = href;
     link.media = media;
-    link.addEventListener('error', reject);
-    link.addEventListener('load', () => {
-      resolve();
-    });
-
-    document.body.appendChild(link);
+    link.className = 'bulma-swatch';
     resolved.set(href, link);
+
+    const removeListeners = () => {
+      link.removeEventListener('load', load);
+      link.removeEventListener('error', error);
+    };
+    const error = () => {
+      removeListeners();
+      reject();
+    };
+    const load = () => {
+      removeListeners();
+      resolve();
+    };
+
+    link.addEventListener('error', error);
+    link.addEventListener('load', load);
+    document.body.appendChild(link);
   });
 };
 
@@ -49,9 +70,12 @@ const swatches = [
   'yeti'
 ];
 
+export const getRandomSwatch = () =>
+  swatches[Math.floor(Math.random() * swatches.length)];
+
 export const useBulmaSwatch = (swatch = 'default') => {
   if (swatch === 'random') {
-    swatch = swatches[Math.floor(Math.random() * swatches.length)];
+    swatch = getRandomSwatch();
   }
 
   useStylesheet({
@@ -72,7 +96,7 @@ export const BulmaApp = ({ swatch, random, children }) => {
 BulmaApp.propTypes = {
   children: PropTypes.node.isRequired,
   random: PropTypes.bool,
-  swatch: PropTypes.oneOf(swatches)
+  swatch: PropTypes.oneOf([...swatches, 'random'])
 };
 
 BulmaApp.defaultProps = {

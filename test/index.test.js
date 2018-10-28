@@ -4,47 +4,86 @@ import renderer from 'react-test-renderer';
 import { useBulmaSwatch, BulmaApp } from '../index';
 
 const render = element => renderer.create(element).toJSON();
+let shouldError = false;
 
+document.getElementsByClassName = jest.fn();
 document.body.appendChild = jest.fn();
 document.createElement = () => ({
+  removeEventListener: () => {},
   addEventListener: (type, end) =>
-    type === 'load' ? new Promise(resolve => resolve(end())) : Promise.resolve()
+    (type === 'load' && end()) || (shouldError && end())
 });
 
 beforeEach(() => {
   document.body.appendChild.mockClear();
+  document.getElementsByClassName.mockClear();
+  document.getElementsByClassName.mockReturnValue([]);
+  shouldError = false;
 });
 
 describe('useBulmaSwatch', () => {
+  test('handles rejections', async () => {
+    shouldError = true;
+    try {
+      await useBulmaSwatch('default');
+    } catch (error) {
+      expect(error).rejects.toBe(undefined);
+    }
+  });
+
   test('default', async () => {
-    await useBulmaSwatch();
-    expect(document.body.appendChild).toHaveBeenCalledWith({
-      href: 'https://jenil.github.io/bulmaswatch/default/bulmaswatch.min.css',
-      media: 'all',
-      rel: 'stylesheet',
-      addEventListener: expect.anything()
-    });
+    try {
+      await useBulmaSwatch();
+    } catch (error) {
+      await error;
+      expect(document.body.appendChild).toHaveBeenCalledWith(
+        expect.objectContaining({
+          href:
+            'https://jenil.github.io/bulmaswatch/default/bulmaswatch.min.css',
+          media: 'all',
+          rel: 'stylesheet',
+          className: 'bulma-swatch'
+        })
+      );
+    }
   });
 
   test('user supplied swatch', async () => {
-    await useBulmaSwatch('nuclear');
-    expect(document.body.appendChild).toHaveBeenCalledWith(
-      expect.objectContaining({
-        href: 'https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css'
-      })
-    );
+    try {
+      await useBulmaSwatch('nuclear');
+    } catch (error) {
+      await error;
+      expect(document.body.appendChild).toHaveBeenCalledWith(
+        expect.objectContaining({
+          href:
+            'https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css'
+        })
+      );
+    }
   });
 
   test('random swatch', async () => {
-    await useBulmaSwatch('random');
+    try {
+      await useBulmaSwatch('random');
+    } catch (error) {
+      await error;
+      expect(document.body.appendChild).toHaveBeenCalledWith(
+        expect.objectContaining({
+          href: expect.stringMatching(
+            /https:\/\/jenil\.github\.io\/bulmaswatch\/\S+\/bulmaswatch\.min\.css/
+          )
+        })
+      );
+    }
+  });
 
-    expect(document.body.appendChild).toHaveBeenCalledWith(
-      expect.objectContaining({
-        href: expect.stringMatching(
-          /https:\/\/jenil\.github\.io\/bulmaswatch\/\S+\/bulmaswatch\.min\.css/
-        )
-      })
-    );
+  test('random swatch', () => {
+    document.getElementsByClassName.mockReturnValueOnce([
+      {
+        href: 'https://jenil.github.io/bulmaswatch/default/bulmaswatch.min.css'
+      }
+    ]);
+    expect(useBulmaSwatch('default')).toBeUndefined();
   });
 });
 

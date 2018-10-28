@@ -6,7 +6,9 @@
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=for-the-badge)](https://github.com/prettier/prettier) [![CircleCI](https://img.shields.io/circleci/project/github/hipstersmoothie/bulma-swatch-hook/master.svg?style=for-the-badge)](https://circleci.com/gh/hipstersmoothie/bulma-swatch-hook) [![npm](https://img.shields.io/npm/v/bulma-swatch-hook.svg?style=for-the-badge)](https://www.npmjs.com/package/bulma-swatch-hook) [![npm](https://img.shields.io/npm/dt/bulma-swatch-hook.svg?style=for-the-badge)](https://www.npmjs.com/package/bulma-swatch-hook)
 
-[Bulma swatches](https://jenil.github.io/bulmaswatch/) as a [react hook](https://reactjs.org/) and a component.
+[Bulma swatches](https://jenil.github.io/bulmaswatch/) as a react hook and a component.
+
+**_NOTE_**: Although you can use this package like a hook it does not actually rely on hooks. Only suspense is needed.
 
 ## Installation
 

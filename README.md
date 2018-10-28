@@ -8,7 +8,7 @@
 
 [Bulma swatches](https://jenil.github.io/bulmaswatch/) as a react hook and a component.
 
-**_NOTE_**: Although you can use this package like a hook it does not actually rely on hooks. Only suspense is needed.
+**NOTE**: Although you can use this package like a hook it does not actually rely on hooks. Only suspense is needed.
 
 ## Installation
 

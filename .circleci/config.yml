@@ -1,0 +1,114 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/bulma-swatch-hook
+  docker:
+    - image: circleci/node:latest-browsers
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # Find a cache corresponding to this specific package.json checksum
+            # when this file is changed, this key will fail
+            - bulma-swatch-hook-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+            - bulma-swatch-hook-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - bulma-swatch-hook-{{ .Branch }}
+            # Find the most recent cache used from any branch
+            - bulma-swatch-hook-master
+            - bulma-swatch-hook-
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          key: bulma-swatch-hook-{{ .Branch }}-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+          paths:
+            - node_modules
+            - ~/.cache/yarn
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/bulma-swatch-hook
+      - run:
+          name: Lint
+          command: yarn lint
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/bulma-swatch-hook
+      - run:
+          name: Test
+          command: yarn test
+
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/bulma-swatch-hook
+      - run:
+          name: Build
+          command: yarn build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/bulma-swatch-hook
+      - run:
+          name: Release
+          command: yarn release
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - install:
+          filters:
+            tags:
+              only: /.*/
+
+      - lint:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
+
+      - test:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
+
+      - build:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /.*/
+
+      - release:
+          requires:
+            - test
+            - lint
+            - build
+          filters:
+            branches:
+              only:
+                - master

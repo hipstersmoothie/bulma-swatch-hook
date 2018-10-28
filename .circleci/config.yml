@@ -74,7 +74,7 @@ jobs:
       - run: npm whoami
       - run:
           name: Release
-          command: yarn run release
+          command: npm run release
 
 workflows:
   version: 2

@@ -73,7 +73,7 @@ jobs:
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/bulma-swatch-hook/.npmrc
       - run:
           name: Release
-          command: yarn release
+          command: yarn run release
 
 workflows:
   version: 2

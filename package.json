@@ -16,6 +16,9 @@
     "lint": "xo",
     "build": "babel index.js -d dist/ --ignore '**/*.test.js'",
     "build:watch": "npm run build -- --watch",
+    "start:example": "webpack-dev-server --config ./example/webpack.config.js --mode development",
+    "build:example": "webpack --config ./example/webpack.config.js",
+    "deploy:example": "gh-pages -d ./example/dist",
     "prerelease": "npm run build",
     "release": "github-semantic-version --bump --changelog --push --publish"
   },
@@ -27,10 +30,7 @@
     "react": ">=16.6.0"
   },
   "dependencies": {
-    "prop-types": "^15.6.2",
-    "react-cache": "^2.0.0-alpha.0",
-    "simple-cache-provider": "^0.10.0",
-    "the-platform": "^0.8.0"
+    "prop-types": "^15.6.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -42,18 +42,25 @@
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-add-module-exports": "^1.0.0",
+    "css-loader": "^1.0.0",
     "eslint": "^5.7.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-config-xo-react": "^0.17.0",
     "eslint-plugin-react": "^7.11.1",
+    "gh-pages": "^2.0.1",
     "github-semantic-version": "^7.6.0",
+    "html-webpack-plugin": "^3.2.0",
     "husky": "^1.1.2",
     "jest": "^23.6.0",
     "lint-staged": "^7.3.0",
+    "mini-css-extract-plugin": "^0.4.4",
     "prettier": "^1.14.3",
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0",
     "react-test-renderer": "^16.5.2",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
     "xo": "^0.23.0"
   },
   "prettier": {
@@ -85,6 +92,7 @@
       "!**/vendor/**",
       "!**/dist/**",
       "!**/stories/**",
+      "!**/example/**",
       "!**/coverage/**"
     ],
     "transform": {
@@ -104,6 +112,7 @@
     "parser": "babel-eslint",
     "rules": {
       "react/jsx-tag-spacing": 0,
+      "react/jsx-child-element-spacing": 0,
       "import/no-unresolved": [
         "error",
         {

@@ -77,7 +77,7 @@ jobs:
           command: npm run release
       - run:
           name: Release the example to GH Pages
-          command: npm run deploy:example
+          command: npm run build:example && npm run deploy:example
 
 workflows:
   version: 2

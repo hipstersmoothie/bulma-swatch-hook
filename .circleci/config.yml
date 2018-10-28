@@ -69,6 +69,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/bulma-swatch-hook
+      - run: mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/bulma-swatch-hook/.npmrc
       - run:
           name: Release
           command: yarn release

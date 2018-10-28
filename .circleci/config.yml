@@ -88,23 +88,23 @@ workflows:
             tags:
               only: /.*/
 
-      - lint:
+      - build:
           requires:
             - install
+          filters:
+            tags:
+              only: /.*/
+
+      - lint:
+          requires:
+            - build
           filters:
             tags:
               only: /.*/
 
       - test:
           requires:
-            - install
-          filters:
-            tags:
-              only: /.*/
-
-      - build:
-          requires:
-            - install
+            - build
           filters:
             tags:
               only: /.*/
@@ -113,7 +113,6 @@ workflows:
           requires:
             - test
             - lint
-            - build
           filters:
             branches:
               only:

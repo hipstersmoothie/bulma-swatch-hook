@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = ({ mode } = {}) => ({
-  mode: mode === 'production' ? 'production' : 'development',
+  mode: mode === 'development' ? 'development' : 'production',
   entry: path.join(__dirname, '/src/index.js'),
   module: {
     rules: [
@@ -23,7 +23,7 @@ module.exports = ({ mode } = {}) => ({
   },
   output: {
     path: path.join(__dirname, '/dist'),
-    publicPath: mode === 'production' ? 'bulma-swatch-hook/' : '/',
+    publicPath: mode === 'development' ? '/' : '/bulma-swatch-hook/',
     filename: 'bundle.js'
   },
   plugins: [

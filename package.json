@@ -16,7 +16,7 @@
     "lint": "xo",
     "build": "babel index.js -d dist/ --ignore '**/*.test.js'",
     "build:watch": "npm run build -- --watch",
-    "start:example": "webpack-dev-server --config ./example/webpack.config.js --mode development",
+    "start:example": "webpack-dev-server --config ./example/webpack.config.js --env.mode development",
     "build:example": "webpack --config ./example/webpack.config.js",
     "deploy:example": "gh-pages -d ./example/dist",
     "prerelease": "npm run build",

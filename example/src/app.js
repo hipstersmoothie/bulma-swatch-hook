@@ -993,21 +993,36 @@ class App extends Component {
     return (
       <div className="App">
         <React.Suspense maxDuration={300} fallback={<Spinner />}>
-          <button
-            className="button randomButton"
-            type="button"
-            onClick={() => {
-              let swatch;
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <button
+              className="button randomButton"
+              type="button"
+              onClick={() => {
+                let swatch;
 
-              while (!swatch || swatch === this.state.theme) {
-                swatch = getRandomSwatch();
-              }
+                while (!swatch || swatch === this.state.theme) {
+                  swatch = getRandomSwatch();
+                }
 
-              this.setState({ theme: swatch });
-            }}
-          >
-            new theme
-          </button>
+                this.setState({ theme: swatch });
+              }}
+            >
+              new theme
+            </button>
+
+            <a
+              href="https://github.com/hipstersmoothie/bulma-swatch-hook"
+              style={{
+                fontSize: 30,
+                position: 'absolute',
+                right: 30
+              }}
+            >
+              <span className="icon is-large">
+                <i className="fab fa-github" />
+              </span>
+            </a>
+          </div>
 
           <BulmaApp swatch={this.state.theme}>
             <Hero className="is-primary" />

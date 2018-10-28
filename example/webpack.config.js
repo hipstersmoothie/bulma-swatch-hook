@@ -34,7 +34,7 @@ module.exports = {
       chunkFilename: '[id].css'
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, '/src/index.html)')
+      template: path.join(__dirname, '/src/index.html')
     })
   ],
   devServer: {
